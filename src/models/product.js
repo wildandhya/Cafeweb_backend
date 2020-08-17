@@ -18,25 +18,12 @@ const productModel = {
     });
   },
   insertProduct: (body) => {
-    const { menu, category_id, price } = body;
-    const queryInsert = `INSERT INTO product SET menu=?, category_id=?, price=?`;
-    return new Promise((resolve, reject) => {
-      connection.query(queryInsert, [menu, category_id, price], (err, data) => {
-        if (!err) {
-          resolve(data);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  },
-  updateProduct: (body) => {
-    const { id, menu, category_id, price } = body;
-    const queryUpdate = `UPDATE product SET menu=?, category_id=?, price=? WHERE id=? `;
+    const { menu, category_id, price, image } = body;
+    const queryInsert = `INSERT INTO product SET menu=?, category_id=?, price=?, image=?`;
     return new Promise((resolve, reject) => {
       connection.query(
-        queryUpdate,
-        [menu, category_id, price, id],
+        queryInsert,
+        [menu, category_id, price, image],
         (err, data) => {
           if (!err) {
             resolve(data);
@@ -47,8 +34,24 @@ const productModel = {
       );
     });
   },
-  deleteProduct: (body) => {
-    const { id } = body;
+  updateProduct: (body) => {
+    const { id, menu, category_id, price, image } = body;
+    const queryUpdate = `UPDATE product SET menu=?, category_id=?, price=?, image=? WHERE id=? `;
+    return new Promise((resolve, reject) => {
+      connection.query(
+        queryUpdate,
+        [menu, category_id, price, image, id],
+        (err, data) => {
+          if (!err) {
+            resolve(data);
+          } else {
+            reject(err);
+          }
+        }
+      );
+    });
+  },
+  deleteProduct: (id) => {
     const queryDelete = "DELETE FROM product WHERE id=?";
     return new Promise((resolve, reject) => {
       connection.query(queryDelete, [id], (err, data) => {
@@ -60,22 +63,9 @@ const productModel = {
       });
     });
   },
-  searchByName: (menu) => {
+  searchByName: (name) => {
     return new Promise((resolve, reject) => {
-      const getByName = `SELECT product.id, product.menu, product.price, categories.category FROM product JOIN categories ON product.category_id = categories.id WHERE product.menu=?`;
-      connection.query(getByName, [menu], (err, data) => {
-        if (!err) {
-          resolve(data);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  },
-  sortByName: () => {
-    return new Promise((resolve, reject) => {
-      const getByName =
-        "SELECT product.id, product.menu, categories.category, product.price FROM product JOIN categories ON product.category_id = categories.id ORDER BY menu ASC ";
+      const getByName = `SELECT product.id, product.menu, product.price, categories.category FROM product JOIN categories ON product.category_id = categories.id WHERE product.menu LIKE "%${name}%"`;
       connection.query(getByName, (err, data) => {
         if (!err) {
           resolve(data);
@@ -85,11 +75,15 @@ const productModel = {
       });
     });
   },
-  sortByCategory: () => {
+  sortMenu: (query) => {
     return new Promise((resolve, reject) => {
-      const getByCategory =
-        "SELECT product.id, categories.category, product.menu, product.price FROM product JOIN categories ON product.category_id = categories.id ORDER BY categories.category ASC ";
-      connection.query(getByCategory, (err, data) => {
+      const page = query.page;
+      const limit = query.limit;
+      const offset = (page - 1) * limit;
+      const order = query.order;
+      const by = query.by;
+      const getByName = `SELECT product.id, product.menu, categories.category, product.price FROM product JOIN categories ON product.category_id = categories.id ORDER BY ${by} ${order} LIMIT ? OFFSET ?   `;
+      connection.query(getByName, [Number(limit), offset], (err, data) => {
         if (!err) {
           resolve(data);
         } else {
@@ -98,24 +92,13 @@ const productModel = {
       });
     });
   },
-  sortByPrice: () => {
+  showProduct: (page, limit) => {
     return new Promise((resolve, reject) => {
-      const getByPrice =
-        "SELECT product.price, product.menu, categories.category FROM product JOIN categories ON product.category_id = categories.id ORDER BY price ASC ";
-      connection.query(getByPrice, (err, data) => {
-        if (!err) {
-          resolve(data);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  },
-  sortByNewMenu: () => {
-    return new Promise((resolve, reject) => {
-      const getByNewMenu =
-        "SELECT product.id, DATE_FORMAT(product.publish_at, '%d-%M-%Y') AS  Publish_at, product.menu, categories.category, product.price FROM `product` JOIN categories ON product.category_id = categories.id ORDER BY publish_at DESC ";
-      connection.query(getByNewMenu, (err, data) => {
+      const offset = (page - 1) * limit;
+      const queryString = `SELECT product.id, product.menu, product.price, categories.category, product.image
+    FROM product 
+    JOIN categories ON product.category_id = categories.id LIMIT ? OFFSET ?`;
+      connection.query(queryString, [Number(limit), offset], (err, data) => {
         if (!err) {
           resolve(data);
         } else {

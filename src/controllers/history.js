@@ -1,43 +1,59 @@
-const historyModel = require('../models/history');
+/** @format */
 
+const historyModel = require("../models/history");
+const formResponse = require("../helpers/forms/form");
 
 const historyController = {
-    incomeByYear: (req, res) => {
-        historyModel.incomeByYear().then((data) => {
-            res.json(data);
-        }).catch((err) => {
-            res.json(err);
-        })
-    },
-    showHistory: (req, res) => {
-        historyModel.showHistory().then((data) => {
-            res.json(data);
-        }).catch((err) => {
-            res.json(err);
-        })
-    },
-    totalOrderByWeek: (req, res) => {
-        historyModel.totalOrderByWeek().then((data) => {
-            res.json(data);
-        }).catch((err) => {
-            res.json(err);
-        })
-    },
-    todayIncome: (req, res) => {
-        historyModel.todayIncome().then((data) => {
-            res.json(data);
-        }).catch((err) => {
-            res.json(err);
-        })
-    },
-    revenueByMonth: (req, res) => {
-        historyModel.revenueByMonth().then((data) => {
-            res.json(data);
-        }).catch((err) => {
-            res.json(err);
-        })
-    },
-}
-
+  incomeByYear: (req, res) => {
+    historyModel
+      .incomeByYear()
+      .then((data) => {
+        formResponse.success(res, data);
+      })
+      .catch((err) => {
+        formResponse.error(res, err);
+      });
+  },
+  showHistory: (req, res) => {
+    historyModel
+      .showHistory()
+      .then((data) => {
+        formResponse.success(res, data);
+      })
+      .catch((err) => {
+        formResponse.error(res, err);
+      });
+  },
+  totalOrderByWeek: (req, res) => {
+    historyModel
+      .totalOrderByWeek()
+      .then((data) => {
+        formResponse.success(res, data);
+      })
+      .catch((err) => {
+        formResponse.error(res, err);
+      });
+  },
+  todayIncome: (req, res) => {
+    historyModel
+      .todayIncome()
+      .then((data) => {
+        formResponse.success(res, data);
+      })
+      .catch((err) => {
+        formResponse.error(res, err);
+      });
+  },
+  revenueByMonth: (req, res) => {
+    historyModel
+      .revenueByMonth()
+      .then((data) => {
+        formResponse.success(res, data);
+      })
+      .catch((err) => {
+        formResponse.error(res, err);
+      });
+  },
+};
 
 module.exports = historyController;

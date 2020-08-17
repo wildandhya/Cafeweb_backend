@@ -2,18 +2,17 @@
 
 const productModel = require("../models/product");
 
-const fromRespon = require("../helpers/form");
-const { error } = require("../helpers/form");
+const formResponse = require("../helpers/forms/form");
 
 const productController = {
   showProduct: (req, res) => {
     productModel
       .showProduct()
       .then((data) => {
-        fromRespon.success(res, data);
+        formResponse.success(res, data);
       })
       .catch((err) => {
-        fromRespon.error(res, err);
+        formResponse.error(res, err);
       });
   },
 
@@ -27,10 +26,10 @@ const productController = {
           create_at: Date.now(),
           update_at: Date.now(),
         };
-        fromRespon.success(res, responData);
+        formResponse.success(res, responData);
       })
       .catch((err) => {
-        fromRespon.error(res, err);
+        formResponse.error(res, err);
       });
   },
 
@@ -38,71 +37,60 @@ const productController = {
     productModel
       .updateProduct(req.body)
       .then((data) => {
-        res.json(data);
+        const responData = {
+          ...req.body,
+          id: data.insertId,
+          update_at: Date.now(),
+        };
+        formResponse.success(res, responData);
       })
       .catch((err) => {
-        res.status(500).json(err);
+        formResponse.error(res, err);
       });
   },
 
   deleteProduct: (req, res) => {
     productModel
-      .deleteProduct(req.body)
+      .deleteProduct(req.params.id)
       .then((data) => {
-        res.json(data);
+        const responData = {
+          msg: "delete product success",
+        };
+        formResponse.success(res, responData);
       })
       .catch((err) => {
-        res.status(500).json(err);
+        formResponse.error(res, err);
       });
   },
   searchByName: (req, res) => {
     productModel
-      .searchByName(req.params.name)
+      .searchByName(req.query.name)
       .then((data) => {
-        res.json(data);
+        formResponse.success(res, data);
       })
       .catch((err) => {
-        res.status(500).json(err);
+        formResponse.error(res, err);
       });
   },
-  sortByName: (req, res) => {
+  sortMenu: (req, res) => {
     productModel
-      .sortByName(req.body)
+      .sortMenu(req.query)
       .then((data) => {
-        res.json(data);
+        formResponse.paginationSort(req, res, data);
       })
       .catch((err) => {
-        res.status(500).json(err);
+        formResponse.error(res, err);
       });
   },
-  sortByCategory: (req, res) => {
+  showProduct: (req, res) => {
+    const { page, limit } = req.query;
     productModel
-      .sortByCategory(req.body)
+      .showProduct(page, limit)
       .then((data) => {
-        res.json(data);
+        formResponse.pagination(req, res, data);
       })
       .catch((err) => {
-        res.status(500).json(err);
-      });
-  },
-  sortByPrice: (req, res) => {
-    productModel
-      .sortByPrice(req.body)
-      .then((data) => {
-        res.json(data);
-      })
-      .catch((err) => {
-        res.status(500).json(err);
-      });
-  },
-  sortByNewMenu: (req, res) => {
-    productModel
-      .sortByNewMenu(req.body)
-      .then((data) => {
-        res.json(data);
-      })
-      .catch((err) => {
-        res.status(500).json(err);
+        formResponse.error(res, err);
       });
   },
 };

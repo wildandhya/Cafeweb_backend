@@ -1,17 +1,29 @@
+/** @format */
+
 const express = require("express");
 const productRouter = express.Router();
 
-const productController = require('../controllers/product')
+const productController = require("../controllers/product");
+const checkTokenAdmin = require("../helpers/middlewares/checkTokenAdmin");
+const checkTokenCashier = require("../helpers/middlewares/checkTokenCashier");
+const fileUpload = require("../helpers/middlewares/fileUpload");
 
-productRouter.get("/", productController.showProduct);
-productRouter.post("/", productController.insertProduct);
-productRouter.put("/", productController.updateProduct);
-productRouter.delete("/", productController.deleteProduct);
-productRouter.get("/:name", productController.searchByName);
-productRouter.get("/sort/new-menu", productController.sortByNewMenu);
-productRouter.get("/sort/price", productController.sortByPrice);
-productRouter.get("/sort/category", productController.sortByCategory);
-productRouter.get("/sort/name", productController.sortByName);
+// productRouter.get("/", checkToken, productController.showProduct);
+productRouter.post(
+  "/",
+  checkTokenAdmin,
+  fileUpload.singleUpload,
+  productController.insertProduct
+);
 
+productRouter.get("/", checkTokenCashier, productController.showProduct);
+productRouter.put(
+  "/",
+  fileUpload.singleUpload,
+  productController.updateProduct
+);
+productRouter.delete("/:id", productController.deleteProduct);
+productRouter.get("/seacrh", checkTokenCashier, productController.searchByName);
+productRouter.get("/sort", checkTokenCashier, productController.sortMenu);
 
 module.exports = productRouter;

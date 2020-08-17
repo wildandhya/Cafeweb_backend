@@ -16,6 +16,8 @@ app.use(cors());
 app.listen(process.env.port, () => {
   console.log(`server is running `);
 });
+
+app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

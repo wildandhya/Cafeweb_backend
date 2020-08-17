@@ -1,14 +1,18 @@
+/** @format */
+
 const express = require("express");
-const router = express.Router()
+const router = express.Router();
 
-const productRouter = require('./product');
-const historyRouter = require('./history');
+const productRouter = require("./product");
+const historyRouter = require("./history");
+const authRouter = require("./auth");
+// const uploadRouter = require("./upload");
 
-
-
+// privete
 router.use("/product", productRouter);
-// router.use("/product/search", searchRouter);
-// router.use("/product", sortRouter);
-router.use("/product/history", historyRouter);
+router.use("/history", historyRouter);
+// router.use("/upload", uploadRouter);
+// public route
+router.use("/auth", authRouter);
 
 module.exports = router;
