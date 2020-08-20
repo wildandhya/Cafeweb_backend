@@ -35,11 +35,10 @@ const productController = {
 
   updateProduct: (req, res) => {
     productModel
-      .updateProduct(req.body)
+      .updateProduct(req.params.id, req.body)
       .then((data) => {
         const responData = {
           ...req.body,
-          id: data.insertId,
           update_at: Date.now(),
         };
         formResponse.success(res, responData);

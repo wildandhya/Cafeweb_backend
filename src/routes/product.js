@@ -18,7 +18,7 @@ productRouter.post(
 
 productRouter.get("/", checkTokenCashier, productController.showProduct);
 productRouter.put(
-  "/",
+  "/:id",
   fileUpload.singleUpload,
   productController.updateProduct
 );

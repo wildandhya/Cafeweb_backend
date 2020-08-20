@@ -34,21 +34,17 @@ const productModel = {
       );
     });
   },
-  updateProduct: (body) => {
-    const { id, menu, category_id, price, image } = body;
-    const queryUpdate = `UPDATE product SET menu=?, category_id=?, price=?, image=? WHERE id=? `;
+  updateProduct: (id, body) => {
+    const update_at = Date.now();
+    const queryUpdate = `UPDATE product SET ? WHERE product.id= ${id} `;
     return new Promise((resolve, reject) => {
-      connection.query(
-        queryUpdate,
-        [menu, category_id, price, image, id],
-        (err, data) => {
-          if (!err) {
-            resolve(data);
-          } else {
-            reject(err);
-          }
+      connection.query(queryUpdate, [{ ...body, update_at }], (err, data) => {
+        if (!err) {
+          resolve(data);
+        } else {
+          reject(err);
         }
-      );
+      });
     });
   },
   deleteProduct: (id) => {
