@@ -11,19 +11,19 @@ const fileUpload = require("../helpers/middlewares/fileUpload");
 // productRouter.get("/", checkToken, productController.showProduct);
 productRouter.post(
   "/",
-  checkTokenAdmin,
+  // checkTokenAdmin,
   fileUpload.singleUpload,
   productController.insertProduct
 );
 
-productRouter.get("/", checkTokenCashier, productController.showProduct);
+productRouter.get("/", productController.showProduct);
 productRouter.put(
   "/:id",
   fileUpload.singleUpload,
   productController.updateProduct
 );
 productRouter.delete("/:id", productController.deleteProduct);
-productRouter.get("/seacrh", checkTokenCashier, productController.searchByName);
-productRouter.get("/sort", checkTokenCashier, productController.sortMenu);
+productRouter.get("/seacrh", productController.searchByName);
+productRouter.get("/sort", productController.sortMenu);
 
 module.exports = productRouter;
