@@ -4,26 +4,22 @@ const express = require("express");
 const productRouter = express.Router();
 
 const productController = require("../controllers/product");
-const checkTokenAdmin = require("../helpers/middlewares/checkTokenAdmin");
-const checkTokenCashier = require("../helpers/middlewares/checkTokenCashier");
+const checkToken = require("../helpers/middlewares/checkToken");
 const fileUpload = require("../helpers/middlewares/fileUpload");
 
-// productRouter.get("/", checkToken, productController.showProduct);
+
 productRouter.post(
-  "/",
-  // checkTokenAdmin,
+  "/",checkToken.admin,
   fileUpload.singleUpload,
-  productController.insertProduct
+  productController.addProduct
 );
 
 productRouter.get("/", productController.showProduct);
 productRouter.put(
-  "/:id",
+  "/:id", checkToken.admin,
   fileUpload.singleUpload,
   productController.updateProduct
 );
-productRouter.delete("/:id", productController.deleteProduct);
-productRouter.get("/seacrh", productController.searchByName);
-productRouter.get("/sort", productController.sortMenu);
+productRouter.delete("/:id", checkToken.admin, productController.deleteProduct);
 
 module.exports = productRouter;

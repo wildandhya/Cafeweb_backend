@@ -2,13 +2,20 @@
 
 const connection = require("../configs/dbMysql");
 
+const selectQuery = `SELECT product.id, product.menu, product.price, categories.category, product.image
+FROM product JOIN categories ON product.category_id = categories.id`;
+
 const productModel = {
-  showProduct: () => {
+  showProduct: (query) => {
+    let queryStr = "";
+    if(query.search === undefined || query.sort_by === undefined || query.order === undefined){
+      const offset = (Number(query.page) - 1) * Number(query.limit);
+      queryStr = `${selectQuery} LIMIT ${query.limit} OFFSET ${offset}` 
+    }else{
+      queryStr = `${selectQuery} WHERE product.menu LIKE "%${query.name}%" ORDER BY ${query.sort_by} ${query.order}`
+    }
     return new Promise((resolve, reject) => {
-      const queryString = `SELECT product.id, product.menu, product.price, categories.category, product.image
-    FROM product 
-    JOIN categories ON product.category_id = categories.id`;
-      connection.query(queryString, (err, data) => {
+      connection.query(queryStr, [Number(limit), offset], (err, data) => {
         if (!err) {
           resolve(data);
         } else {
@@ -17,7 +24,7 @@ const productModel = {
       });
     });
   },
-  insertProduct: (body) => {
+  addProduct: (body) => {
     const { menu, category_id, price, image } = body;
     const queryInsert = `INSERT INTO product SET menu=?, category_id=?, price=?, image=?`;
     return new Promise((resolve, reject) => {
@@ -51,50 +58,6 @@ const productModel = {
     const queryDelete = "DELETE FROM product WHERE id=?";
     return new Promise((resolve, reject) => {
       connection.query(queryDelete, [id], (err, data) => {
-        if (!err) {
-          resolve(data);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  },
-  searchByName: (name) => {
-    return new Promise((resolve, reject) => {
-      const getByName = `SELECT product.id, product.menu, product.price, categories.category FROM product JOIN categories ON product.category_id = categories.id WHERE product.menu LIKE "%${name}%"`;
-      connection.query(getByName, (err, data) => {
-        if (!err) {
-          resolve(data);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  },
-  sortMenu: (query) => {
-    return new Promise((resolve, reject) => {
-      const page = query.page;
-      const limit = query.limit;
-      const offset = (page - 1) * limit;
-      const order = query.order;
-      const by = query.by;
-      const getByName = `SELECT product.id, product.menu, categories.category, product.price FROM product JOIN categories ON product.category_id = categories.id ORDER BY ${by} ${order} LIMIT ? OFFSET ?   `;
-      connection.query(getByName, [Number(limit), offset], (err, data) => {
-        if (!err) {
-          resolve(data);
-        } else {
-          reject(err);
-        }
-      });
-    });
-  },
-  showProduct: (page, limit) => {
-    return new Promise((resolve, reject) => {
-      const offset = (page - 1) * limit;
-      const queryString = `SELECT product.id, product.menu, product.price, categories.category, product.image
-    FROM product 
-    JOIN categories ON product.category_id = categories.id LIMIT ? OFFSET ?`;
-      connection.query(queryString, [Number(limit), offset], (err, data) => {
         if (!err) {
           resolve(data);
         } else {

@@ -7,7 +7,7 @@ const formResponse = require("../helpers/forms/form");
 const productController = {
   showProduct: (req, res) => {
     productModel
-      .showProduct()
+      .showProduct(req.query)
       .then((data) => {
         formResponse.success(res, data);
       })
@@ -16,9 +16,9 @@ const productController = {
       });
   },
 
-  insertProduct: (req, res) => {
+  addProduct: (req, res) => {
     productModel
-      .insertProduct(req.body)
+      .addProduct(req.body)
       .then((data) => {
         const responData = {
           ...req.body,
@@ -56,37 +56,6 @@ const productController = {
           msg: "delete product success",
         };
         formResponse.success(res, responData);
-      })
-      .catch((err) => {
-        formResponse.error(res, err);
-      });
-  },
-  searchByName: (req, res) => {
-    productModel
-      .searchByName(req.query.name)
-      .then((data) => {
-        formResponse.success(res, data);
-      })
-      .catch((err) => {
-        formResponse.error(res, err);
-      });
-  },
-  sortMenu: (req, res) => {
-    productModel
-      .sortMenu(req.query)
-      .then((data) => {
-        formResponse.paginationSort(req, res, data);
-      })
-      .catch((err) => {
-        formResponse.error(res, err);
-      });
-  },
-  showProduct: (req, res) => {
-    const { page, limit } = req.query;
-    productModel
-      .showProduct(page, limit)
-      .then((data) => {
-        formResponse.pagination(req, res, data);
       })
       .catch((err) => {
         formResponse.error(res, err);
