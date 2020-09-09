@@ -9,7 +9,7 @@ const productController = {
     productModel
       .showProduct(req.query)
       .then((data) => {
-        formResponse.success(res, data);
+        formResponse.pagination(req, res, data);
       })
       .catch((err) => {
         formResponse.error(res, err);

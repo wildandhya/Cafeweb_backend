@@ -17,7 +17,7 @@ const historyModel = {
   },
   showHistory: () => {
     return new Promise((resolve, reject) => {
-      const queryString = `SELECT history.invoices, history.cashier, DATE_FORMAT(history.date, '%d-%M-%Y') AS date, product.menu, SUM(price) AS amount FROM history JOIN product ON history.menu_id = product.id GROUP BY history.invoices`;
+      const queryString = `SELECT history.invoice, history.cashier, history.date, product.menu, history.amount FROM history JOIN transaction ON history.invoice = transaction.invoice_id JOIN product ON transaction.menu_id = product.id`;
       connection.query(queryString, (err, data) => {
         if (!err) {
           resolve(data);

@@ -6,7 +6,7 @@ const formResponse = require("../helpers/forms/form");
 const authController = {
   register: (req, res) => {
     authModel
-      .postNewUser(req.body)
+      .register(req.body)
       .then((data) => {
         const responseData = {
           msg: "Register succses",
@@ -19,7 +19,7 @@ const authController = {
   },
   login: (req, res) => {
     authModel
-      .loginUser(req.body)
+      .login(req.body)
       .then((data) => {
         formResponse.success(res, data);
       })

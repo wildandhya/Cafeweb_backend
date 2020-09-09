@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const authModel = {
-  postNewUser: (body) => {
+  register: (body) => {
     return new Promise((resolve, reject) => {
       const checkUsername = "SELECT username FROM users WHERE username = ?";
       db.query(checkUsername, [body.username], (err, data) => {
@@ -36,7 +36,7 @@ const authModel = {
       });
     });
   },
-  loginUser: (body) => {
+  login: (body) => {
     return new Promise((resolve, reject) => {
       const checkUsername = "SELECT username FROM users WHERE username = ?";
       db.query(checkUsername, [body.username], (err, data) => {

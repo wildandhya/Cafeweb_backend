@@ -8,14 +8,20 @@ FROM product JOIN categories ON product.category_id = categories.id`;
 const productModel = {
   showProduct: (query) => {
     let queryStr = "";
-    if(query.search === undefined || query.sort_by === undefined || query.order === undefined){
+    if (
+      query.search === undefined ||
+      query.sort_by === undefined ||
+      query.order === undefined
+    ) {
       const offset = (Number(query.page) - 1) * Number(query.limit);
-      queryStr = `${selectQuery} LIMIT ${query.limit} OFFSET ${offset}` 
-    }else{
-      queryStr = `${selectQuery} WHERE product.menu LIKE "%${query.name}%" ORDER BY ${query.sort_by} ${query.order}`
+      queryStr = `${selectQuery} LIMIT ${query.limit} OFFSET ${offset}`;
+    } else {
+      const offset = (Number(query.page) - 1) * Number(query.limit);
+      queryStr = `${selectQuery} WHERE product.menu LIKE '%${query.search}%' ORDER BY ${query.sort_by} ${query.order} LIMIT ${query.limit} OFFSET ${offset}`;
     }
     return new Promise((resolve, reject) => {
-      connection.query(queryStr, [Number(limit), offset], (err, data) => {
+      connection.query(queryStr, (err, data) => {
+        console.log(data);
         if (!err) {
           resolve(data);
         } else {
@@ -24,6 +30,7 @@ const productModel = {
       });
     });
   },
+
   addProduct: (body) => {
     const { menu, category_id, price, image } = body;
     const queryInsert = `INSERT INTO product SET menu=?, category_id=?, price=?, image=?`;

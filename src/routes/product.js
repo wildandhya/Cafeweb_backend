@@ -7,19 +7,24 @@ const productController = require("../controllers/product");
 const checkToken = require("../helpers/middlewares/checkToken");
 const fileUpload = require("../helpers/middlewares/fileUpload");
 
-
+productRouter.get("/product", productController.showProduct);
 productRouter.post(
-  "/",checkToken.admin,
+  "/product",
+  checkToken.admin,
   fileUpload.singleUpload,
   productController.addProduct
 );
 
-productRouter.get("/", productController.showProduct);
 productRouter.put(
-  "/:id", checkToken.admin,
+  "/product/:id",
+  checkToken.admin,
   fileUpload.singleUpload,
   productController.updateProduct
 );
-productRouter.delete("/:id", checkToken.admin, productController.deleteProduct);
+productRouter.delete(
+  "/product/:id",
+  checkToken.admin,
+  productController.deleteProduct
+);
 
 module.exports = productRouter;
