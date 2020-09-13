@@ -9,12 +9,12 @@ const transactionModel = {
     return new Promise((resolve, reject) => {
       const startTransaction = `START TRANSACTION;`;
       const firstQuery = `INSERT INTO history SET invoice = ?, cashier = ?, amount = ?;`;
-      const secondQuery = `INSERT INTO transaction (invoice_id, menu_id, quantity) VALUES ?;`;
+      const secondQuery = `INSERT INTO orders (invoice_id, menu_id, quantity) VALUES ?;`;
       const endTransaction = `COMMIT;`;
       const joinQuery =
         startTransaction + firstQuery + secondQuery + endTransaction;
       let totalOrder = transaction.map((item) => {
-        return [invoice, item.product_id, item.quantity];
+        return [invoice, item.menu_id, item.quantity];
       });
       connection.query(
         joinQuery,
@@ -30,23 +30,6 @@ const transactionModel = {
       );
     });
   },
-  // addTransaction: (body) => {
-  // const { invoice_id, menu_id, quantity } = body;
-  // const queryStr = `INSERT INTO transaction SET invoice_id = ?, menu_id = ?, quantity =?`;
-  // return new Promise((resolve, reject) => {
-  // connection.query(
-  // queryStr,
-  // [invoice_id, menu_id, quantity],
-  // (err, data) => {
-  // if (!err) {
-  // resolve(data);
-  // } else {
-  // reject(err);
-  // }
-  // }
-  // );
-  // });
-  // },
 };
 
 module.exports = transactionModel;
