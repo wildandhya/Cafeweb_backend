@@ -14,14 +14,13 @@ const productModel = {
       query.order === undefined
     ) {
       const offset = (Number(query.page) - 1) * Number(query.limit);
-      queryStr = `${selectQuery} LIMIT ${query.limit} OFFSET ${offset}`;
+      queryStr = `${selectQuery}`;
     } else {
       const offset = (Number(query.page) - 1) * Number(query.limit);
       queryStr = `${selectQuery} WHERE product.menu LIKE '%${query.search}%' ORDER BY ${query.sort_by} ${query.order} LIMIT ${query.limit} OFFSET ${offset}`;
     }
     return new Promise((resolve, reject) => {
       connection.query(queryStr, (err, data) => {
-        console.log(data);
         if (!err) {
           resolve(data);
         } else {
@@ -33,11 +32,11 @@ const productModel = {
 
   addProduct: (body) => {
     const { menu, category_id, price, image } = body;
-    const queryInsert = `INSERT INTO product SET menu=?, category_id=?, price=?, image=?`;
+    const queryInsert = `INSERT INTO product SET menu=?, image=?, price=?, category_id=?`;
     return new Promise((resolve, reject) => {
       connection.query(
         queryInsert,
-        [menu, category_id, price, image],
+        [menu, image, price, category_id],
         (err, data) => {
           if (!err) {
             resolve(data);

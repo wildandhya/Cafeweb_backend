@@ -10,7 +10,7 @@ const fileUpload = require("../helpers/middlewares/fileUpload");
 productRouter.get("/product", productController.showProduct);
 productRouter.post(
   "/product",
-  checkToken.admin,
+  // checkToken.admin,
   fileUpload.singleUpload,
   productController.addProduct
 );
