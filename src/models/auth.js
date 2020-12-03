@@ -10,7 +10,7 @@ const authModel = {
       const checkUsername = "SELECT username FROM users WHERE username = ?";
       db.query(checkUsername, [body.username], (err, data) => {
         if (data.length) {
-          reject({ msg: "usernamenya udh ade" });
+          reject({ msg: "username already exist" });
         } else {
           bcrypt.genSalt(10, (err, salt) => {
             if (err) {
@@ -44,18 +44,18 @@ const authModel = {
           reject("msg: username not found");
         } else {
           const qs =
-            "SELECT users.username, users.password, users.level_id FROM users WHERE username=?";
-          db.query(qs, body.username, (err, data) => {
+            "SELECT users.email, users.password, users.level_id FROM users WHERE email=?";
+          db.query(qs, body.email, (err, data) => {
             if (err) {
               reject(err);
             }
             if (data.length) {
               bcrypt.compare(body.password, data[0].password, (err, result) => {
                 if (result) {
-                  const { username } = body;
+                  const { email } = body;
                   const { level_id } = data[0];
                   const payload = {
-                    username,
+                    email,
                     level_id,
                   };
                   const token = jwt.sign(payload, process.env.SECRET_KEY);

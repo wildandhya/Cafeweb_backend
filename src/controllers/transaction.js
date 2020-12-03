@@ -8,8 +8,11 @@ const transactionController = {
     transactionModel
       .addTransaction(req.body)
       .then((data) => {
-        console.log(data);
-        // formResponse.success(res, data);
+        const responBody = {
+          ...req.body,
+          msg: "order success",
+        };
+        formResponse.success(res, responBody);
       })
       .catch((err) => {
         formResponse.error(res, err);
