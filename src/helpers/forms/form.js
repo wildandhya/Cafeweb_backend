@@ -7,16 +7,16 @@ const formResponse = {
       status: 200,
       data: data,
     };
-    res.json(formResponObj);
+    res.status(200).json(formResponObj);
   },
 
   error: (res, error) => {
     const formResponObj = {
       success: false,
-      status: 500,
+      status: 403,
       error: error,
     };
-    res.json(formResponObj);
+    res.status(403).json(formResponObj);
   },
   pagination: ({ query }, res, data) => {
     const page = Number(query.page);

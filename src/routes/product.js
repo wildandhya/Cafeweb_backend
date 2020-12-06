@@ -17,13 +17,13 @@ productRouter.post(
 
 productRouter.put(
   "/product/:id",
-  checkToken.admin,
+  // checkToken.admin,
   fileUpload.singleUpload,
   productController.updateProduct
 );
 productRouter.delete(
   "/product/:id",
-  checkToken.admin,
+  // checkToken.admin,
   productController.deleteProduct
 );
 

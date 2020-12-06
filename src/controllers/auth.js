@@ -21,6 +21,7 @@ const authController = {
     authModel
       .login(req.body)
       .then((data) => {
+        console.log(req.body);
         formResponse.success(res, data);
       })
       .catch((err) => {

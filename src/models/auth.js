@@ -7,10 +7,10 @@ const jwt = require("jsonwebtoken");
 const authModel = {
   register: (body) => {
     return new Promise((resolve, reject) => {
-      const checkUsername = "SELECT username FROM users WHERE username = ?";
-      db.query(checkUsername, [body.username], (err, data) => {
+      const checkUsername = "SELECT email FROM users WHERE email = ?";
+      db.query(checkUsername, [body.email], (err, data) => {
         if (data.length) {
-          reject({ msg: "username already exist" });
+          reject({ msg: "email already exist" });
         } else {
           bcrypt.genSalt(10, (err, salt) => {
             if (err) {
@@ -21,7 +21,11 @@ const authModel = {
               if (err) {
                 reject(err);
               }
-              const newBody = { ...body, password: hashedPassword };
+              const newBody = {
+                ...body,
+                password: hashedPassword,
+                level_id: 1,
+              };
               const qs = "INSERT INTO users SET ?";
               db.query(qs, newBody, (err, data) => {
                 if (!err) {
@@ -38,13 +42,14 @@ const authModel = {
   },
   login: (body) => {
     return new Promise((resolve, reject) => {
-      const checkUsername = "SELECT username FROM users WHERE username = ?";
-      db.query(checkUsername, [body.username], (err, data) => {
+      const checkUsername = "SELECT email FROM users WHERE email=?";
+      db.query(checkUsername, [body.email], (err, data) => {
         if (!data.length) {
-          reject("msg: username not found");
+          reject({
+            msg: "your email not found",
+          });
         } else {
-          const qs =
-            "SELECT users.email, users.password, users.level_id FROM users WHERE email=?";
+          const qs = "SELECT * FROM users WHERE email=?";
           db.query(qs, body.email, (err, data) => {
             if (err) {
               reject(err);
@@ -60,11 +65,11 @@ const authModel = {
                   };
                   const token = jwt.sign(payload, process.env.SECRET_KEY);
                   const msg = "login success";
-                  resolve({ msg, token });
+                  resolve({ data, msg, token });
                 }
                 if (!result) {
                   reject({
-                    msg: "wrong password",
+                    msg: "Password wrong",
                   });
                 }
                 if (err) {
