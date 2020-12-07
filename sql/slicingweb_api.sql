@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 25, 2020 at 08:25 PM
+-- Generation Time: Dec 07, 2020 at 09:52 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.7
 
@@ -48,10 +48,10 @@ INSERT INTO `categories` (`id`, `category`) VALUES
 
 CREATE TABLE `history` (
   `id` int(11) NOT NULL,
-  `invoices` int(11) NOT NULL,
+  `invoice` varchar(255) NOT NULL,
   `cashier` int(11) NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `menu_id` int(11) NOT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `menu_id` int(11) DEFAULT NULL,
   `amount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -59,24 +59,16 @@ CREATE TABLE `history` (
 -- Dumping data for table `history`
 --
 
-INSERT INTO `history` (`id`, `invoices`, `cashier`, `date`, `menu_id`, `amount`) VALUES
-(1, 222, 1, '2020-08-16 17:00:00', 3, 0),
-(2, 222, 1, '2020-08-16 17:00:00', 9, 0),
-(3, 222, 1, '2020-06-01 17:00:00', 8, 0),
-(4, 222, 1, '2020-06-01 17:00:00', 6, 0),
-(5, 223, 2, '2020-06-09 17:00:00', 3, 0),
-(6, 223, 2, '2020-06-09 17:00:00', 9, 0),
-(7, 223, 2, '2020-06-09 17:00:00', 2, 0),
-(8, 223, 2, '2020-06-09 17:00:00', 6, 0),
-(9, 224, 1, '2020-07-15 17:00:00', 7, 0),
-(10, 224, 1, '2020-07-15 17:00:00', 1, 0),
-(11, 224, 1, '2020-07-15 17:00:00', 6, 0),
-(12, 225, 2, '2020-08-01 17:00:00', 5, 0),
-(13, 225, 2, '2020-08-01 17:00:00', 4, 0),
-(14, 225, 2, '2020-08-01 17:00:00', 8, 0),
-(15, 226, 2, '2020-08-02 17:00:00', 8, 0),
-(16, 226, 2, '2020-08-02 17:00:00', 2, 0),
-(17, 226, 2, '2020-08-02 17:00:00', 5, 0);
+INSERT INTO `history` (`id`, `invoice`, `cashier`, `date`, `menu_id`, `amount`) VALUES
+(1, '1', 2, '2020-09-09 16:39:53', 0, 1000),
+(9, '1', 2, '2020-09-09 16:57:22', NULL, 3000),
+(10, '1', 2, '2020-09-09 16:59:46', NULL, 3000),
+(11, '2', 2, '2020-09-09 17:05:15', NULL, 3000),
+(12, '2', 1, '2020-09-09 17:07:18', NULL, 3000),
+(14, '2', 1, '2020-09-10 13:15:00', NULL, 2000),
+(17, '4', 1, '2020-09-10 13:17:24', NULL, 2000),
+(18, '1', 1, '2020-09-10 13:29:35', NULL, 2000),
+(29, '2', 1, '2020-09-10 13:37:15', NULL, 1111);
 
 -- --------------------------------------------------------
 
@@ -100,6 +92,27 @@ INSERT INTO `levels` (`id`, `level`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(11) NOT NULL,
+  `invoice` int(11) DEFAULT NULL,
+  `menu_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `invoice`, `menu_id`, `quantity`) VALUES
+(1, 1, 6, 1),
+(6, NULL, 7, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `product`
 --
 
@@ -119,14 +132,11 @@ CREATE TABLE `product` (
 
 INSERT INTO `product` (`id`, `menu`, `category_id`, `price`, `image`, `create_at`, `update_at`) VALUES
 (1, 'Expresso', 1, 10000, 'http://localhost:8000/images/1597933250902-image.png', '2020-08-07 03:49:03', '0000-00-00 00:00:00'),
-(2, 'Coffe Latte', 1, 20000, 'http://localhost:8000/images/1597933576860-image.png', '2020-08-07 03:49:03', '0000-00-00 00:00:00'),
-(3, 'Cappucino', 1, 15000, 'http://localhost:8000/images/1597933597285-image.png', '2020-08-07 03:49:07', '0000-00-00 00:00:00'),
-(4, 'Red Velvet', 1, 30000, 'http://localhost:8000/images/1597933609336-image.png', '2020-08-07 03:49:07', '0000-00-00 00:00:00'),
-(5, 'Choco Rhum', 2, 35000, 'http://localhost:8000/images/1597933626146-image.png', '2020-08-07 03:51:00', '0000-00-00 00:00:00'),
-(6, 'Blackforest', 2, 30000, 'http://localhost:8000/images/1597933645709-image.png', '2020-08-07 03:51:02', '0000-00-00 00:00:00'),
-(7, 'Chiken Katsu', 2, 60000, 'http://localhost:8000/images/1597933659095-image.png', '2020-08-07 03:52:23', '0000-00-00 00:00:00'),
-(8, 'Salmon Truffle', 2, 65000, 'http://localhost:8000/images/1597933671506-image.png', '2020-08-07 03:52:26', '0000-00-00 00:00:00'),
-(9, 'Wiener Schnitzel', 2, 69000, 'http://localhost:8000/images/1597933681440-image.png', '2020-08-07 03:54:04', '0000-00-00 00:00:00');
+(5, 'Mie Goreng Sambal Matah', 2, 15000, 'http://localhost:8000/images/1599982132322-image.jpg', '2020-08-07 03:51:00', '0000-00-00 00:00:00'),
+(6, 'Mie Goreng Aceh', 2, 20000, 'http://localhost:8000/images/1599982198362-image.jpg', '2020-08-07 03:51:02', '0000-00-00 00:00:00'),
+(7, 'Mie Kuah Kari Ayam', 2, 18000, 'http://localhost:8000/images/1599982253705-image.jpg', '2020-08-07 03:52:23', '0000-00-00 00:00:00'),
+(8, 'Mie Goreng Aceh', 2, 20000, 'http://localhost:8000/images/1599982309711-image.jpg', '2020-08-07 03:52:26', '0000-00-00 00:00:00'),
+(9, 'Mie Goreng Ayam Geprek', 2, 25000, 'http://localhost:8000/images/1599982343928-image.jpg', '2020-08-07 03:54:04', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -137,6 +147,7 @@ INSERT INTO `product` (`id`, `menu`, `category_id`, `price`, `image`, `create_at
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
+  `email` text NOT NULL,
   `password` varchar(255) NOT NULL,
   `level_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -145,15 +156,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `password`, `level_id`) VALUES
-(1, 'wildan', '$2b$10$cr/lUp.xf1I14UHQOjb/rece8nz7WQT8YoBSz6CDXIsnEyl0B/pTi', 1),
-(2, 'pevita', '$2b$10$aXuRuVQgJLXqusriDS6txOSQeAM9DrERa1Ot6m.er.3gi0G3Bm.L6', 2),
-(3, 'pacar pevita', '$2b$10$Y08mLPqsLtsbgLFyIgOXf..ZcJOhHUTbUtfKIUXuYVgBRAQLJe23K', 3),
-(4, 'mia', '$2b$10$eCv3KFP3STnuQUFrVZqzH.6ZApgS1hnxgexNbBIVAchmqrdOoLgSW', 2),
-(5, 'willy', '$2b$10$v6LNo0vIHpXNwU72v8CBiet1cntcOrkBlLVkc/njuZubsuR9DrIhe', 1),
-(6, 'willly', '$2b$10$5X0xu0bLOVpY.L4XcYCx3eMyLaVSJYQ9Q6bzaw1h2eMTo91emla66', 1),
-(7, 'will', '$2b$10$YmfHj98GDEaoQwex5t1H../oibdS8QEuDxzKbcVpkdEN9AkpkHyhO', 2),
-(8, 'jafar', '$2b$10$1pbWnHGcb3FmfBzUs1jeS.f5/9Nc/4LAIly3bcw0EC3rY2tlB35mi', 2);
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `level_id`) VALUES
+(10, 'wildandhya', 'wildandhya@gmail.com', '$2b$10$XkfkTUQfWrGcGORNOM8fvOssy/kfgCsJ6RHV2uYhaKkh3MXw2ExYW', 1),
+(11, 'willy', 'willy@gmail.com', '$2b$10$zAF669BQ5uAZbOoyaD6gCuYekB/zM2lUZJH44z.1vt5qvmg29l19i', 2);
 
 --
 -- Indexes for dumped tables
@@ -176,6 +181,14 @@ ALTER TABLE `history`
 --
 ALTER TABLE `levels`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `invoice` (`invoice`),
+  ADD KEY `menu_id` (`menu_id`);
 
 --
 -- Indexes for table `product`
@@ -203,7 +216,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `levels`
@@ -212,16 +225,33 @@ ALTER TABLE `levels`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`invoice`) REFERENCES `history` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `product` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
