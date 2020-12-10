@@ -47,7 +47,7 @@ const fileUpload = {
         });
       } else {
         try {
-          req.body.image = `http://localhost:8000/images/${req.file.filename}`;
+          req.body.image = `http://3.87.168.244:8080/images/${req.file.filename}`;
         } catch (err) {
           console.log(err);
         } finally {
