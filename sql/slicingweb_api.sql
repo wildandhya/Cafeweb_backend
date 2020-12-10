@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2020 at 09:52 AM
+-- Generation Time: Dec 10, 2020 at 07:50 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.7
 
@@ -131,12 +131,12 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `menu`, `category_id`, `price`, `image`, `create_at`, `update_at`) VALUES
-(1, 'Expresso', 1, 10000, 'http://localhost:8000/images/1597933250902-image.png', '2020-08-07 03:49:03', '0000-00-00 00:00:00'),
-(5, 'Mie Goreng Sambal Matah', 2, 15000, 'http://localhost:8000/images/1599982132322-image.jpg', '2020-08-07 03:51:00', '0000-00-00 00:00:00'),
-(6, 'Mie Goreng Aceh', 2, 20000, 'http://localhost:8000/images/1599982198362-image.jpg', '2020-08-07 03:51:02', '0000-00-00 00:00:00'),
-(7, 'Mie Kuah Kari Ayam', 2, 18000, 'http://localhost:8000/images/1599982253705-image.jpg', '2020-08-07 03:52:23', '0000-00-00 00:00:00'),
-(8, 'Mie Goreng Aceh', 2, 20000, 'http://localhost:8000/images/1599982309711-image.jpg', '2020-08-07 03:52:26', '0000-00-00 00:00:00'),
-(9, 'Mie Goreng Ayam Geprek', 2, 25000, 'http://localhost:8000/images/1599982343928-image.jpg', '2020-08-07 03:54:04', '0000-00-00 00:00:00');
+(1, 'Expresso', 1, 10000, 'http://3.87.168.244:8080/images/1597933250902-image.png', '2020-08-07 03:49:03', '0000-00-00 00:00:00'),
+(5, 'Mie Goreng Sambal Matah', 2, 15000, 'http://3.87.168.244:8080/images/1599982132322-image.jpg', '2020-08-07 03:51:00', '0000-00-00 00:00:00'),
+(6, 'Mie Goreng Aceh', 2, 20000, 'http://3.87.168.244:8080/images/1599982198362-image.jpg', '2020-08-07 03:51:02', '0000-00-00 00:00:00'),
+(7, 'Mie Kuah Kari Ayam', 2, 18000, 'http://3.87.168.244:8080/images/1599982253705-image.jpg', '2020-08-07 03:52:23', '0000-00-00 00:00:00'),
+(8, 'Mie Goreng Aceh', 2, 20000, 'http://3.87.168.244:8080/images/1599982309711-image.jpg', '2020-08-07 03:52:26', '0000-00-00 00:00:00'),
+(9, 'Mie Goreng Ayam Geprek', 2, 25000, 'http://3.87.168.244:8080/images/1599982343928-image.jpg', '2020-08-07 03:54:04', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
